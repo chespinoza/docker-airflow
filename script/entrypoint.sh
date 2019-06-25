@@ -67,6 +67,11 @@ if [ "$AIRFLOW__CORE__EXECUTOR" = "CeleryExecutor" ]; then
   wait_for_port "Redis" "$REDIS_HOST" "$REDIS_PORT"
 fi
 
+# Load Airflow variables from json file if /variables.json is mounted
+if [ -e "/variables.json" ]; then
+    airflow variables --import /variables.json
+fi
+
 case "$1" in
   webserver)
     airflow initdb
